@@ -1,0 +1,8 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/cube_all",
+	"textures": {
+		"all": "applied_create_logistics:block/me_mechanical_logistics_provider"
+	}
+}

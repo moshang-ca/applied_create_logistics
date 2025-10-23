@@ -1,7 +1,6 @@
 package com.moshang.appliedcreatelogistics;
 
 import appeng.api.ids.AECreativeTabIds;
-import com.moshang.appliedcreatelogistics.items.ModItems;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;

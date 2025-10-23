@@ -24,14 +24,14 @@ public class MechanicalLogisticsProviderMenu extends AbstractContainerMenu {
         //TODO:修改槽位的X，Y位置，适配GUI
         int cols = 9;
         int startX = 8;
-        int startY = 18;
+        int startY = 45;
         int slotSize = 18;
 
         for(int i = 0; i < handler.getSlots(); ++i) {
             int x = startX + ( i % cols) * slotSize;
             int y = startY + ( i / cols) * slotSize;
 
-            this.addSlot(new Slot(playerInv, i, x, y) {
+            this.addSlot(new Slot(new Inventory(playerInv.player), i, x, y) {
                 @Override
                 public boolean mayPlace(@Nonnull ItemStack stack) {
                     return stack.getItem() instanceof EncodedPatternItem;
@@ -40,7 +40,7 @@ public class MechanicalLogisticsProviderMenu extends AbstractContainerMenu {
         }
 
         int playerStartX = 8;
-        int playerStartY = 84;
+        int playerStartY = 131;
         for(int row = 0; row < 3; ++row) {
             for(int col = 0; col < 9; ++col) {
                 this.addSlot(new Slot(playerInv, col + row * 9 + 9, playerStartX + col * slotSize, playerStartY + row * slotSize));

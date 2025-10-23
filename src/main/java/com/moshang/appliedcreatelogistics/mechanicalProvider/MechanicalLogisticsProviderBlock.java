@@ -21,7 +21,7 @@ public class MechanicalLogisticsProviderBlock extends Block implements EntityBlo
 
     public MechanicalLogisticsProviderBlock() {
         super(BlockBehaviour.Properties.of()
-                .strength(2.f)
+                .strength(4.f)
         );
     }
     @Nullable

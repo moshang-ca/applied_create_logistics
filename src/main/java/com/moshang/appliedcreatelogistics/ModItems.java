@@ -1,6 +1,5 @@
-package com.moshang.appliedcreatelogistics.items;
+package com.moshang.appliedcreatelogistics;
 
-import com.moshang.appliedcreatelogistics.AppliedCreateLogistics;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;

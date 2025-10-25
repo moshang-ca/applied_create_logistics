@@ -1,7 +1,9 @@
 package com.moshang.appliedcreatelogistics.mechanicalProvider;
 
+import appeng.api.crafting.IPatternDetails;
 import appeng.crafting.pattern.EncodedPatternItem;
 import com.moshang.appliedcreatelogistics.AllMenuTypes;
+import com.moshang.appliedcreatelogistics.items.LogisticsPattern.LogisticsPatternItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -10,8 +12,10 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 public class MechanicalLogisticsProviderMenu extends AbstractContainerMenu {
     private final MechanicalLogisticsProviderBlockEntity blockEntity;
@@ -21,7 +25,7 @@ public class MechanicalLogisticsProviderMenu extends AbstractContainerMenu {
         super(AllMenuTypes.MECHANICAL_LOGISTICS_PROVIDER_MENU.get(), containerId);
         this.blockEntity = be;
         this.handler = be.getItemHandler();
-        //TODO:修改槽位的X，Y位置，适配GUI
+
         int cols = 9;
         int startX = 8;
         int startY = 45;
@@ -31,10 +35,17 @@ public class MechanicalLogisticsProviderMenu extends AbstractContainerMenu {
             int x = startX + ( i % cols) * slotSize;
             int y = startY + ( i / cols) * slotSize;
 
-            this.addSlot(new Slot(new Inventory(playerInv.player), i, x, y) {
+            this.addSlot(new SlotItemHandler(handler, i, x, y) {
                 @Override
                 public boolean mayPlace(@Nonnull ItemStack stack) {
-                    return stack.getItem() instanceof EncodedPatternItem;
+                    return stack.getItem() instanceof EncodedPatternItem || stack.getItem() instanceof LogisticsPatternItem;
+                }
+
+                @Override
+                public void setChanged() {
+                    super.setChanged();
+
+                    blockEntity.onPatternChanged();
                 }
             });
         }

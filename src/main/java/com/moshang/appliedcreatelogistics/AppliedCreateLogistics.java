@@ -2,8 +2,12 @@ package com.moshang.appliedcreatelogistics;
 
 import appeng.api.ids.AECreativeTabIds;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.level.ChunkEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(AppliedCreateLogistics.MOD_ID)
@@ -15,6 +19,11 @@ public class AppliedCreateLogistics {
         onRegistry(modEventBus);
 
         modEventBus.addListener(this::addCreative);
+        modEventBus.addListener(this::commonSetup);
+    }
+
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        AllEvents.eventRegister(event);
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
@@ -28,5 +37,10 @@ public class AppliedCreateLogistics {
         AllBlockEntityTypes.register(bus);
         ModItems.register(bus);
         AllMenuTypes.register(bus);
+    }
+
+    @SubscribeEvent
+    public static void onChunkLoad(ChunkEvent.Load event) {
+
     }
 }

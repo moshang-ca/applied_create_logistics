@@ -1,8 +1,10 @@
 package com.moshang.appliedcreatelogistics.mechanicalProvider;
 
+import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IGridNodeListener;
 import appeng.api.networking.IManagedGridNode;
+import appeng.api.networking.crafting.ICraftingProvider;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.util.AECableType;
@@ -23,33 +25,64 @@ public class MechanicalLogisticsProviderNode implements IGridNodeListener<Mechan
     private IManagedGridNode managedNode;
     private MechanicalPackaging packagingProvider;//TODO:实现打包逻辑
 
+    private void ensureServicesRegistered(IGridNode node) {
+        if (packagingProvider == null) {
+            packagingProvider = new MechanicalPackaging(host);
+        }
+        GridNode gridNode = (GridNode)node;
+
+        boolean bCraftingProviderRegistered = gridNode.getService(ICraftingProvider.class) != null;
+        boolean bPackagingProviderRegistered = gridNode.getService(IPackagingProviderService.class) != null;
+
+        if(!bCraftingProviderRegistered) {
+            gridNode.addService(ICraftingProvider.class, packagingProvider);
+        }
+        if(!bPackagingProviderRegistered) {
+            gridNode.addService(IPackagingProviderService.class, packagingProvider);
+        }
+    }
+
+    private void ensurePackagingProvider(IGridNode node) {
+        if(packagingProvider == null) {
+            packagingProvider = new MechanicalPackaging(host);
+            GridNode gridNode = (GridNode)node;
+            gridNode.addService(IPackagingProviderService.class, packagingProvider);
+            gridNode.addService(ICraftingProvider.class, packagingProvider);
+        }
+    }
+
     public MechanicalLogisticsProviderNode(MechanicalLogisticsProviderBlockEntity host) {
         this.host = host;
         this.source = new MachineSource((IActionHost) host);
     }
 
     @Override
-    public void onSaveChanges(MechanicalLogisticsProviderBlockEntity mechanicalLogisticsProviderBlockEntity, IGridNode iGridNode) {
-
+    public void onSaveChanges(MechanicalLogisticsProviderBlockEntity blockEntity, IGridNode node) {
+        blockEntity.setChanged();
     }
 
     @Override
     public void onGridChanged(MechanicalLogisticsProviderBlockEntity nodeOwner, IGridNode node) {
         if(node.isOnline()) {
-            ensurePackagingProvider((GridNode) node); //TODO:注册provider服务
+            ensureServicesRegistered(node);
+            ensurePackagingProvider(node); //TODO:注册provider服务
         }else {
             packagingProvider = null;
         }
     }
 
-    public void onReady(GridNode node, ServerLevel level) {
-        ensurePackagingProvider(node);
+    public void onReady(ServerLevel level) {
+        IManagedGridNode node = getManagedNode(level);
+        if (node != null) {
+            node.create(level, host.getBlockPos());
+            ensurePackagingProvider((GridNode) node.getNode());
+        }
     }
 
     private void ensurePackagingProvider(GridNode node) {
         if(packagingProvider == null) {
             packagingProvider = new MechanicalPackaging(host);
-            node.addService(IPackagingProviderService.class, packagingProvider);
+
         }
     }
 
@@ -58,15 +91,29 @@ public class MechanicalLogisticsProviderNode implements IGridNodeListener<Mechan
             managedNode = appeng.api.networking.GridHelper.createManagedNode(
                     host, this
             );
-            managedNode.setIdlePowerUsage(10.f);
+            managedNode.setIdlePowerUsage(10.0);
             managedNode.setExposedOnSides(EnumSet.allOf(Direction.class));
             managedNode.setVisualRepresentation(host.getBlockState().getBlock());
+            managedNode.setInWorldNode(true);
+            managedNode.setGridColor(appeng.api.util.AEColor.TRANSPARENT);
+            managedNode.setFlags(GridFlags.REQUIRE_CHANNEL);
+
+            //packagingProvider = new MechanicalPackaging(host);
+            if (level instanceof ServerLevel serverLevel) {
+                managedNode.create(serverLevel, host.getBlockPos());
+
+                ensureServicesRegistered(managedNode.getNode());
+            }
         }
         return managedNode;
     }
 
     public IActionSource getActionSource() {
         return source;
+    }
+
+    public MechanicalPackaging getPackagingProvider() {
+        return packagingProvider;
     }
 
     public boolean isActive() {

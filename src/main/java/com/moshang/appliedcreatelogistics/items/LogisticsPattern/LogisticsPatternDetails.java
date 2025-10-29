@@ -5,6 +5,7 @@ import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.GenericStack;
 import appeng.api.stacks.KeyCounter;
 import appeng.crafting.pattern.EncodedPatternItem;
+import com.moshang.appliedcreatelogistics.AllItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
@@ -25,18 +26,14 @@ public class LogisticsPatternDetails implements IPatternDetails {
             this.defaultAddress = "default_address";
         }
 
-        this.definition = AEItemKey.of(patternStack);
+        this.definition = AEItemKey.of(patternStack.getItem());
 
-        if(patternStack.getItem() instanceof EncodedPatternItem encodedPatternItem) {
-            this.decodePattern = encodedPatternItem.decode(patternStack, null, false);
-        } else {
-            this.decodePattern = null;
-        }
+        this.decodePattern = null;
     }
 
     public LogisticsPatternDetails(ItemStack patternStack, String defaultAddress) {
         this.patternStack = patternStack;
-        this.definition = AEItemKey.of(patternStack);
+        this.definition = AEItemKey.of(AllItems.BLANK_LOGISTICS_PATTERN.get(), null);
         this.defaultAddress = defaultAddress;
         this.decodePattern = null;
     }
@@ -48,25 +45,16 @@ public class LogisticsPatternDetails implements IPatternDetails {
 
     @Override
     public IInput[] getInputs() {
-        if(this.decodePattern != null) {
-            return this.decodePattern.getInputs();
-        }
         return new IInput[0];
     }
 
     @Override
     public GenericStack[] getOutputs() {
-        if(this.decodePattern != null) {
-            return this.decodePattern.getOutputs();
-        }
         return new GenericStack[0];
     }
 
     @Override
     public GenericStack getPrimaryOutput() {
-        if(this.decodePattern != null) {
-            return this.decodePattern.getPrimaryOutput();
-        }
         return null;
     }
 

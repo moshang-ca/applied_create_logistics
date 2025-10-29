@@ -1,3 +1,5 @@
 {
-  "block.applied_create_logistics.me_mechanical_logistics_provider": "ME物流供应器"
+  "block.applied_create_logistics.me_mechanical_logistics_provider": "ME物流供应器",
+  "item.applied_create_logistics.blank_logistics_pattern": "空白物流样板",
+  "item.applied_create_logistics.logistics_pattern": "物流样板"
 }

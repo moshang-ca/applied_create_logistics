@@ -1,4 +1,4 @@
-package com.moshang.appliedcreatelogistics.mechanicalProvider;
+package com.moshang.appliedcreatelogistics.blocks.mechanicalProvider;
 
 import appeng.api.crafting.IPatternDetails;
 import appeng.api.networking.crafting.ICraftingProvider;
@@ -74,8 +74,6 @@ public class MechanicalPackaging implements ICraftingProvider, IPackagingProvide
 
                 if(stack.getItem() instanceof LogisticsPatternItem logisticsPatternItem) {
                     patternDetails = logisticsPatternItem.decode(stack, host.getLevel(), false);
-                } else if(stack.getItem() instanceof EncodedPatternItem aePatternItem) {
-                    patternDetails = aePatternItem.decode(stack, host.getLevel(), false);
                 }
 
                 if(patternDetails != null && patternDetails.getOutputs() != null && patternDetails.getOutputs().length > 0) {

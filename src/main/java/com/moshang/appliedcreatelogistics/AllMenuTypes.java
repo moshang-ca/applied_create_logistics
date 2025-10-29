@@ -1,14 +1,12 @@
 package com.moshang.appliedcreatelogistics;
 
-import com.moshang.appliedcreatelogistics.mechanicalProvider.MechanicalLogisticsProviderMenu;
+import com.moshang.appliedcreatelogistics.blocks.mechanicalProvider.MechanicalLogisticsProviderMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.awt.*;
 
 public class AllMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENU_TYPES =

@@ -1,4 +1,4 @@
-package com.moshang.appliedcreatelogistics.mechanicalProvider;
+package com.moshang.appliedcreatelogistics.blocks.mechanicalProvider;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;

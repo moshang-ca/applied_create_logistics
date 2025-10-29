@@ -37,6 +37,7 @@ public class LogisticsPatternItem extends EncodedPatternItem {
         return tag != null && tag.contains("LogisticsAddress") ? tag.getString("LogisticsAddress") : "default";
     }
 
+    /*
     public ItemStack getOutput(ItemStack patternStack) {
         Level level = net.minecraft.client.Minecraft.getInstance().level;
         if(level == null)
@@ -52,4 +53,21 @@ public class LogisticsPatternItem extends EncodedPatternItem {
 
         return ItemStack.EMPTY;
     }
+
+     */
+
+    public ItemStack getOutput(ItemStack patternStack) {
+        if (patternStack.isEmpty() || !(patternStack.getItem() instanceof LogisticsPatternItem)) {
+            return ItemStack.EMPTY;
+        }
+
+        LogisticsPatternDetails details = new LogisticsPatternDetails(patternStack);
+        GenericStack output = details.getPrimaryOutput();
+        if (output != null && output.what() instanceof AEItemKey key) {
+            return key.toStack((int) output.amount());
+        }
+
+        return ItemStack.EMPTY;
+    }
+
 }

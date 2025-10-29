@@ -1,6 +1,6 @@
 package com.moshang.appliedcreatelogistics;
 
-import com.moshang.appliedcreatelogistics.mechanicalProvider.MechanicalLogisticsProviderBlock;
+import com.moshang.appliedcreatelogistics.blocks.mechanicalProvider.MechanicalLogisticsProviderBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;

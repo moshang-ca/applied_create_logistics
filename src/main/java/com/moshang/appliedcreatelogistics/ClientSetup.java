@@ -1,7 +1,6 @@
 package com.moshang.appliedcreatelogistics;
 
-import com.google.common.eventbus.Subscribe;
-import com.moshang.appliedcreatelogistics.mechanicalProvider.MechanicalLogisticsProviderScreen;
+import com.moshang.appliedcreatelogistics.blocks.mechanicalProvider.MechanicalLogisticsProviderScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

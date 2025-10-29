@@ -1,3 +1,5 @@
 {
-  "block.applied_create_logistics.me_mechanical_logistics_provider": "ME Mechanical Logistics Provider"
+  "block.applied_create_logistics.me_mechanical_logistics_provider": "ME Mechanical Logistics Provider",
+  "item.applied_create_logistics.blank_logistics_pattern": "Blank Logistics Pattern",
+  "item.applied_create_logistics.logistics_pattern": "Logistics Pattern"
 }

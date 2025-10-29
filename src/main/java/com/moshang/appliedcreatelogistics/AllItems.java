@@ -1,5 +1,7 @@
 package com.moshang.appliedcreatelogistics;
 
+import com.moshang.appliedcreatelogistics.items.LogisticsPattern.BlankLogisticsPatternItem;
+import com.moshang.appliedcreatelogistics.items.LogisticsPattern.LogisticsPatternItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -9,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import static com.moshang.appliedcreatelogistics.AllBlocks.MECHANICAL_LOGISTICS_PROVIDER_BLOCK;
 
-public class ModItems {
+public class AllItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, AppliedCreateLogistics.MOD_ID);
 
@@ -18,6 +20,18 @@ public class ModItems {
                     "me_mechanical_logistics_provider",
                     () -> new BlockItem(MECHANICAL_LOGISTICS_PROVIDER_BLOCK.get(),
                             new Item.Properties().stacksTo(64))
+            );
+
+    public static final RegistryObject<Item> BLANK_LOGISTICS_PATTERN =
+            ITEMS.register(
+                    "blank_logistics_pattern",
+                    () -> new BlankLogisticsPatternItem(new Item.Properties().stacksTo(64))
+            );
+
+    public static final RegistryObject<Item> LOGISTICS_PATTERN =
+            ITEMS.register(
+                    "logistics_pattern",
+                    () -> new LogisticsPatternItem(new Item.Properties().stacksTo(64))
             );
 
     public static void register(IEventBus eventBus) {

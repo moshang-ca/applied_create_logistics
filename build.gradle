@@ -58,6 +58,7 @@ minecraft {
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
+    accessTransformers = files('src/main/resources/appliedcreatelogistics.accesswidener')
     runs {
         // applies to all the run configs below
         configureEach {
@@ -219,4 +220,16 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+mixin {
+    // 添加refmap配置
+    add sourceSets.main, "appliedcreatelogistics.refmap.json"
+
+    // 指定Mixin配置文件
+    config "mixins.appliedcreatelogistics.json"
+
+    // 启用调试
+    debug.verbose = true
+    debug.export = true
 }

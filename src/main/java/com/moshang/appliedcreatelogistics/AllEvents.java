@@ -1,11 +1,9 @@
 package com.moshang.appliedcreatelogistics;
 
-import com.moshang.appliedcreatelogistics.mechanicalProvider.MechanicalLogisticsProviderBlockEntity;
+import com.moshang.appliedcreatelogistics.blocks.mechanicalProvider.MechanicalLogisticsProviderBlockEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 public class AllEvents {

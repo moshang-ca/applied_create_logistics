@@ -1,4 +1,4 @@
-package com.moshang.appliedcreatelogistics.mechanicalProvider;
+package com.moshang.appliedcreatelogistics.blocks.mechanicalProvider;
 
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
@@ -23,7 +23,7 @@ public class MechanicalLogisticsProviderNode implements IGridNodeListener<Mechan
     private final MechanicalLogisticsProviderBlockEntity host;
     private final IActionSource source;
     private IManagedGridNode managedNode;
-    private MechanicalPackaging packagingProvider;//TODO:实现打包逻辑
+    private MechanicalPackaging packagingProvider;
 
     private void ensureServicesRegistered(IGridNode node) {
         if (packagingProvider == null) {
@@ -60,13 +60,27 @@ public class MechanicalLogisticsProviderNode implements IGridNodeListener<Mechan
     public void onSaveChanges(MechanicalLogisticsProviderBlockEntity blockEntity, IGridNode node) {
         blockEntity.setChanged();
     }
-
+/*
     @Override
     public void onGridChanged(MechanicalLogisticsProviderBlockEntity nodeOwner, IGridNode node) {
         if(node.isOnline()) {
             ensureServicesRegistered(node);
-            ensurePackagingProvider(node); //TODO:注册provider服务
+            ensurePackagingProvider(node);
+            nodeOwner.onGridConnected(node);
         }else {
+            nodeOwner.onGridDisconnected();
+            packagingProvider = null;
+        }
+    }
+
+ */
+    @Override
+    public void onGridChanged(MechanicalLogisticsProviderBlockEntity nodeOwner, IGridNode node) {
+        if(node.isOnline()) {
+            ensureServicesRegistered(node);
+            nodeOwner.onGridConnected(node);
+        } else {
+            nodeOwner.onGridDisconnected();
             packagingProvider = null;
         }
     }
@@ -78,14 +92,15 @@ public class MechanicalLogisticsProviderNode implements IGridNodeListener<Mechan
             ensurePackagingProvider((GridNode) node.getNode());
         }
     }
-
+/*
     private void ensurePackagingProvider(GridNode node) {
         if(packagingProvider == null) {
             packagingProvider = new MechanicalPackaging(host);
 
         }
     }
-
+*/
+    /*
     public IManagedGridNode getManagedNode(Level level) {
         if(managedNode == null && level != null && !level.isClientSide) {
             managedNode = appeng.api.networking.GridHelper.createManagedNode(
@@ -107,7 +122,33 @@ public class MechanicalLogisticsProviderNode implements IGridNodeListener<Mechan
         }
         return managedNode;
     }
+*/
+    public IManagedGridNode getManagedNode(Level level) {
+        if(managedNode == null && level != null && !level.isClientSide) {
+            System.out.println("🔄 创建物流供应器节点...");
 
+            managedNode = appeng.api.networking.GridHelper.createManagedNode(host, this);
+            managedNode.setIdlePowerUsage(10.0);
+            managedNode.setExposedOnSides(EnumSet.allOf(Direction.class));
+            managedNode.setVisualRepresentation(host.getBlockState().getBlock());
+            managedNode.setInWorldNode(true);
+            managedNode.setGridColor(appeng.api.util.AEColor.TRANSPARENT);
+            managedNode.setFlags(GridFlags.REQUIRE_CHANNEL);
+
+            if (level instanceof ServerLevel serverLevel) {
+                System.out.println("✅ 在服务器端创建节点，位置: " + host.getBlockPos());
+                managedNode.create(serverLevel, host.getBlockPos());
+
+                // 立即注册服务
+                ensureServicesRegistered(managedNode.getNode());
+
+                // 检查节点状态
+                IGridNode node = managedNode.getNode();
+                System.out.println("📊 节点状态 - 在线: " + node.isOnline() + ", 活跃: " + node.isActive());
+            }
+        }
+        return managedNode;
+}
     public IActionSource getActionSource() {
         return source;
     }
